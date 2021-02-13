@@ -1,0 +1,24 @@
+version: '3'
+services:
+  test-db:
+    image: mongo:4.2.2
+    environment:
+      MONGO_INITDB_DATABASE: test
+    ports:
+      - 27017:27017
+  test-frontend:
+    build:
+      dockerfile: frontend/frontend.dockerfile
+      context: .
+    environment:
+      REACT_APP_API_HOST: http://localhost:3001
+    ports:
+      - 3000:3000
+  test-api:
+    build:
+      dockerfile: api/api.dockerfile
+      context: .
+    environment:
+      MONGODB_URI: mongodb://test-db:27017
+    ports:
+      - 3001:3001
